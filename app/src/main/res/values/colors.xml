@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#0288D1</color>
+    <color name="colorPrimaryDark">#0D47A1</color>
+    <color name="colorAccent">#4FC3F7</color>
+
+    <color name="white">#FFFFFF</color>
+
+    <!--Text-->
+    <color name="primary_text">#0D47A1</color>
+    <color name="secondary_text">#212121</color>
+    <color name="secondary_text_disabled_view">#61212121</color>
+    <color name="secondary_text_hint">#61212121</color>
+
+    <!--list background-->
+    <color name="list_item_background">#F5F5F5</color>
 </resources>

@@ -1,0 +1,73 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!--Generic sizes-->
+    <dimen name="size_0">0dp</dimen>
+    <dimen name="size_1">1dp</dimen>
+    <dimen name="size_2">2dp</dimen>
+    <dimen name="size_3">3dp</dimen>
+    <dimen name="size_4">4dp</dimen>
+    <dimen name="size_5">5dp</dimen>
+    <dimen name="size_18">18dp</dimen>
+    <dimen name="size_10">10dp</dimen>
+    <dimen name="size_20">20dp</dimen>
+    <dimen name="size_30">30dp</dimen>
+    <dimen name="size_40">40dp</dimen>
+    <dimen name="size_60">60dp</dimen>
+    <dimen name="size_80">80dp</dimen>
+    <dimen name="size_90">90dp</dimen>
+    <dimen name="size_100">100dp</dimen>
+
+    <!-- padding and margins -->
+    <dimen name="spacing_extra_small">2dp</dimen>
+    <dimen name="spacing_small">5dp</dimen>
+    <dimen name="spacing_medium">10dp</dimen>
+    <dimen name="spacing_medium_x">12dp</dimen>
+    <dimen name="spacing_normal">16dp</dimen>
+    <dimen name="spacing_large">20dp</dimen>
+    <dimen name="spacing_large_x">24dp</dimen>
+    <dimen name="spacing_large_xx">28dp</dimen>
+    <dimen name="spacing_large_xxx">32dp</dimen>
+    <dimen name="spacing_large_xxxx">36dp</dimen>
+    <dimen name="spacing_large_xxxxx">70dp</dimen>
+    <dimen name="spacing_large_xxxxxx">90dp</dimen>
+
+    <dimen name="progress_bar_height">50dp</dimen>
+    <dimen name="progress_bar_width">50dp</dimen>
+
+    <!-- padding and margins -->
+    <dimen name="margin_small">5dp</dimen>
+    <dimen name="margin_medium">10dp</dimen>
+    <dimen name="margin_medium_x">12dp</dimen>
+    <dimen name="margin_normal">16dp</dimen>
+    <dimen name="margin_large">20dp</dimen>
+    <dimen name="margin_large_x">24dp</dimen>
+    <dimen name="margin_large_xx">28dp</dimen>
+    <dimen name="margin_large_xxx">32dp</dimen>
+    <dimen name="margin_large_xxxx">36dp</dimen>
+    <dimen name="margin_large_xxxxx">70dp</dimen>
+
+    <!--btn size -->
+    <dimen name="btn_small">20dp</dimen>
+    <dimen name="btn_small_x">30dp</dimen>
+    <dimen name="btn_medium">60dp</dimen>
+    <dimen name="btn_medium_x">90dp</dimen>
+
+    <!--text size -->
+    <dimen name="text_small">8dp</dimen>
+    <dimen name="text_small_x">10dp</dimen>
+    <dimen name="text_small_xx">12dp</dimen>
+    <dimen name="text_medium">14dp</dimen>
+    <dimen name="text_medium_x">16dp</dimen>
+    <dimen name="text_medium_xx">18dp</dimen>
+    <dimen name="text_normal">20dp</dimen>
+    <dimen name="text_normal_x">22dp</dimen>
+    <dimen name="text_normal_xx">24dp</dimen>
+    <dimen name="text_large">24dp</dimen>
+    <dimen name="text_large_x">26dp</dimen>
+    <dimen name="text_large_xx">28dp</dimen>
+    <dimen name="text_large_xxx">30dp</dimen>
+
+</resources>
