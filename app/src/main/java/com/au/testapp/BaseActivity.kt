@@ -94,4 +94,10 @@ open class BaseActivity : AppCompatActivity() {
         supportActionBar!!.show()
     }
 
+    /* Update the title on action bar */
+    protected fun updateActionBarTitle(titleResId: String) {
+        val actionBar = supportActionBar
+        actionBar!!.title = titleResId
+    }
+
 }

@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.au.testapp.R
-import com.au.testapp.modules.firstModule.viewmodel.MainViewModel
+import com.au.testapp.modules.firstModule.viewmodel.FirstViewModel
 
 class CountryDetailListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
@@ -26,14 +26,14 @@ class CountryDetailListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
 
     private lateinit var mActivity: FragmentActivity
     private lateinit var mRecyclerView: RecyclerView
-    private lateinit var mViewModel: MainViewModel
+    private lateinit var mViewModel: FirstViewModel
     private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mActivity = activity!!
-        mViewModel = ViewModelProviders.of(mActivity).get(MainViewModel::class.java)
+        mViewModel = ViewModelProviders.of(mActivity).get(FirstViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

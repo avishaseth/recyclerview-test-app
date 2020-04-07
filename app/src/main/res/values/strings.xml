@@ -4,4 +4,7 @@
     <!--generic strings-->
     <string name="loading">Loading</string>
     <string name="empty_title"></string>
+
+    <string name="network_error">Not able to download the results. Please check your internet connection and try again.</string>
+
 </resources>
