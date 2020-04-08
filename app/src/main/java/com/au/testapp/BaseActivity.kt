@@ -77,10 +77,8 @@ open class BaseActivity : AppCompatActivity() {
     /* Update the title on action bar */
     protected fun updateActionBarTitle(titleResId: String?) {
         val actionBar = supportActionBar
-        if (titleResId == null)
-            actionBar!!.title = getString(R.string.empty_title)
-        else
-            actionBar!!.title = titleResId
+        actionBar!!.title = titleResId ?: getString(R.string.empty_title)
+
     }
 
 
