@@ -94,6 +94,7 @@ class CountryDetailListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
             return
         }
 
+        //mViewModel.countryDetailsResults.observe(mActivity, mGetCountryDetailsListObserver)
         mViewModel.countryDetailsResults.observe(mActivity, mGetCountryDetailsListObserver)
     }
 

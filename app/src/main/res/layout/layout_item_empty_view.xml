@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_error"
         style="@style/SecondaryTextSmall"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

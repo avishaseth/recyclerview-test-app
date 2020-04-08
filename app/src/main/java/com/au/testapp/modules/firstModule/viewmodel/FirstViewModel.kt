@@ -43,5 +43,6 @@ class FirstViewModel : ViewModel() {
 
     /* Load the results from the network */
     private fun loadResults(): MutableLiveData<Results> {
-        return mCountryDetailsListDataSource.countryDetailsList
-    }}
+        return  mCountryDetailsListDataSource.countryDetailsList
+    }
+}
