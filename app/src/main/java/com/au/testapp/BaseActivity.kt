@@ -1,12 +1,14 @@
 package com.au.testapp
 
+import android.app.ProgressDialog
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 
@@ -16,6 +18,8 @@ open class BaseActivity : AppCompatActivity() {
         var INVALID_HOME_ICON = -1
         var INVALID_TITLE = -1
     }
+
+    private lateinit var mProgressDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,6 +96,37 @@ open class BaseActivity : AppCompatActivity() {
     /* Show Action bar */
     protected fun showActionBar() {
         supportActionBar!!.show()
+    }
+
+    /* Update the title on action bar */
+    protected fun updateActionBarTitle(titleResId: String?) {
+        val actionBar = supportActionBar
+        actionBar!!.title = titleResId ?: ""
+    }
+
+    /* Show Progress Dialog */
+    protected open fun showProgressDialog() {
+        if (!::mProgressDialog.isInitialized) {
+            mProgressDialog = ProgressDialog(this)
+            mProgressDialog!!.setMessage(getString(R.string.loading))
+            mProgressDialog!!.isIndeterminate = true
+            mProgressDialog!!.setCancelable(false)
+        }
+        mProgressDialog.show()
+    }
+
+    /* Hide Progress Dialog */
+    protected fun hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing) {
+            mProgressDialog.hide()
+        }
+    }
+
+    public fun isNetworkAvailable(): Boolean {
+        val service = Context.CONNECTIVITY_SERVICE
+        val manager = getSystemService(service) as ConnectivityManager?
+        val network = manager?.activeNetworkInfo
+        return (network != null)
     }
 
 }
