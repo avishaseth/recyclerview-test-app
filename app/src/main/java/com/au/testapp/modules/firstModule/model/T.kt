@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
+//Generic class to be extended by model classes
 open class T : Serializable {
 
     @SerializedName("isApiSuccess")

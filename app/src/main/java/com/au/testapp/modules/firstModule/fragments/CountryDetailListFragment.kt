@@ -11,13 +11,14 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.au.testapp.IdlingResourceSingleton
 import com.au.testapp.R
-import com.au.testapp.modules.firstModule.activities.FirstActivity
 import com.au.testapp.modules.firstModule.adapters.CountryDetailsListAdapter
 import com.au.testapp.modules.firstModule.model.Results
 import com.au.testapp.modules.firstModule.model.Row
 import com.au.testapp.modules.firstModule.network.ErrorHandler
-import com.au.testapp.modules.firstModule.viewmodel.FirstViewModel
+import com.au.testapp.modules.firstModule.activities.CountryDetailActivity
+import com.au.testapp.modules.firstModule.viewmodel.CountryDetailViewModel
 import java.util.*
 
 /**
@@ -33,9 +34,9 @@ class CountryDetailListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
         }
     }
 
-    private lateinit var mActivity: FirstActivity
+    private lateinit var mActivity: CountryDetailActivity
     private lateinit var mRecyclerView: RecyclerView
-    private lateinit var mViewModel: FirstViewModel
+    private lateinit var mViewModel: CountryDetailViewModel
     private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
 
     /*Observers required*/
@@ -44,8 +45,8 @@ class CountryDetailListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mActivity = activity as FirstActivity
-        mViewModel = ViewModelProviders.of(mActivity).get(FirstViewModel::class.java)
+        mActivity = activity as CountryDetailActivity
+        mViewModel = ViewModelProviders.of(mActivity).get(CountryDetailViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -66,13 +67,22 @@ class CountryDetailListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
         super.onDestroyView()
         // We don't want to observe any data change when this fragment is in the
         // current method and will be destroyed
-        if (mGetCountryDetailsListObserver != null)
-            mViewModel.countryDetailsResults.removeObserver(mGetCountryDetailsListObserver)
+        if (mGetCountryDetailsListObserver != null) {
+            mViewModel.fetchCountryList(false).removeObserver(mGetCountryDetailsListObserver)
+        }
     }
 
     override fun onRefresh() {
         // observe for any update on the server
-        mViewModel.updatedResults.observe(mActivity, mGetCountryDetailsListObserver)
+        // observe the changes on activity too and do appropriate action when results are fetched.
+        // This will return false only when the internet is false
+        var isSuccess = mActivity.fetchCountryDetailsList(true)
+        // only if the operation is successful on activity, do the same for the activity
+        if (isSuccess)
+            mViewModel.fetchCountryList(true).observe(this, mGetCountryDetailsListObserver)
+        else
+        // dismiss the swipe refresh layout as we are not able to fetch the results mainly due to internet in-availability
+            mSwipeRefreshLayout.isRefreshing = false
     }
 
     private fun initViews(view: View) {
@@ -89,13 +99,14 @@ class CountryDetailListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
     }
 
     private fun populateCountryDetailsList() {
-        // check if the network is available
-        if (!mActivity.isNetworkAvailable()) {
-            return
+        // observe the changes on activity too and do appropriate action when results are fetched.
+        var isSuccess = mActivity.fetchCountryDetailsList(false)
+        // only if the operation is successful on activity, do the same for the fragment
+        if (isSuccess) {
+            IdlingResourceSingleton.increment()
+            mActivity.showProgressDialog()
+            mViewModel.fetchCountryList(false).observe(this, mGetCountryDetailsListObserver)
         }
-
-        //mViewModel.countryDetailsResults.observe(mActivity, mGetCountryDetailsListObserver)
-        mViewModel.countryDetailsResults.observe(mActivity, mGetCountryDetailsListObserver)
     }
 
     private fun initializeObserverForFetchingCountryList() {
@@ -108,12 +119,9 @@ class CountryDetailListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
                     .handleError(mActivity, results.resultCode)
             }
             setDataOnList(results)
-            if (mSwipeRefreshLayout.isRefreshing) {
-                mSwipeRefreshLayout.isRefreshing = false
-            }
+            mSwipeRefreshLayout.isRefreshing = false
         }
     }
-
 
     private fun setDataOnList(results: Results?) {
         // create a list of items initially the list is empty. if the list is empty the "Empty view is shown on recycler view"
