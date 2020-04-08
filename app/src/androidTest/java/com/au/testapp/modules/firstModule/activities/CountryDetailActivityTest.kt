@@ -18,10 +18,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class FirstActivityTest {
+class CountryDetailActivityTest {
 
     @get:Rule
-    val activityRule2 = ActivityTestRule(FirstActivity::class.java)
+    val activityRule2 = ActivityTestRule(CountryDetailActivity::class.java)
 
     @Before
     fun setUp() {

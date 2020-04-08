@@ -10,9 +10,10 @@ import com.google.gson.reflect.TypeToken
 /**
  * View Model to access the country detail list from network
  */
-class FirstViewModel : ViewModel() {
+class CountryDetailViewModel : ViewModel() {
 
     private lateinit var mCountryDetailsListDataSource: CountryDetailsRepository
+
     /* Data which is observed by the Activity and all the related fragments */
     private var mResults: MutableLiveData<Results>? = null
 
@@ -26,23 +27,15 @@ class FirstViewModel : ViewModel() {
     }
 
     /* Get the country details list results */
-    val countryDetailsResults: MutableLiveData<Results>
-        get() {
-            if (mResults == null || mResults!!.value == null) {
-                mResults = loadResults()
-            }
-            return mResults!!
-        }
-
-    /* Get the updated country details list results */
-    val updatedResults: MutableLiveData<Results>
-        get() {
+    fun fetchCountryList(forceLoad: Boolean): MutableLiveData<Results> {
+        if (forceLoad || mResults == null || mResults!!.value == null) {
             mResults = loadResults()
-            return mResults!!
         }
+        return mResults!!
+    }
 
     /* Load the results from the network */
     private fun loadResults(): MutableLiveData<Results> {
-        return  mCountryDetailsListDataSource.countryDetailsList
+        return mCountryDetailsListDataSource.countryDetailsList
     }
 }

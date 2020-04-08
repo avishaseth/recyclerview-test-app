@@ -9,33 +9,34 @@ import com.au.testapp.IdlingResourceSingleton
 import com.au.testapp.R
 import com.au.testapp.modules.firstModule.fragments.CountryDetailListFragment
 import com.au.testapp.modules.firstModule.model.Results
-import com.au.testapp.modules.firstModule.viewmodel.FirstViewModel
+import com.au.testapp.modules.firstModule.viewmodel.CountryDetailViewModel
 
 /**
  * Activity class to show country details list
  */
-class FirstActivity : BaseActivity() {
+class CountryDetailActivity : BaseActivity() {
     /* View model for the activity and related fragments to observe the data */
-    private lateinit var mViewModel: FirstViewModel
+    private lateinit var mViewModel: CountryDetailViewModel
+
     /* Observers required for the country details list */
     private lateinit var mGetCountryDetailsListObserver: Observer<Results>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initActionBar()
-        setContentView(R.layout.activity_first, null)
-        mViewModel = ViewModelProviders.of(this).get(FirstViewModel::class.java)
+        setContentView(R.layout.activity_country_detail, null)
+        mViewModel = ViewModelProviders.of(this).get(CountryDetailViewModel::class.java)
         showCountryDetailsListFragment()
         initializeObserverForFetchingCountryList()
-        fetchCountryDetailsList()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         /* We don't want to observe any data change when this fragment is in the
         current method and will be destroyed */
-        if (mGetCountryDetailsListObserver != null)
-            mViewModel.countryDetailsResults.removeObserver(mGetCountryDetailsListObserver)
+        if (mGetCountryDetailsListObserver != null) {
+            mViewModel.fetchCountryList(false).removeObserver(mGetCountryDetailsListObserver)
+        }
     }
 
     private fun initActionBar() {
@@ -47,29 +48,30 @@ class FirstActivity : BaseActivity() {
 
     private fun showCountryDetailsListFragment() {
         val countryDetailsListFragment = CountryDetailListFragment.newInstance()
-        showFragment(R.id.main_content_view, countryDetailsListFragment, CountryDetailListFragment.FRAGMENT_TAG, false, true)
+        showFragment(
+            R.id.main_content_view,
+            countryDetailsListFragment,
+            CountryDetailListFragment.FRAGMENT_TAG,
+            false,
+            true
+        )
     }
 
-    /* Update title bar with value from API */
-    private fun fetchCountryDetailsList() {
+    fun fetchCountryDetailsList(forceLoad: Boolean): Boolean {
         // check if the network is available
         if (!isNetworkAvailable()) {
             Toast.makeText(
-                this@FirstActivity,
+                this@CountryDetailActivity,
                 R.string.internet_not_available_error,
                 Toast.LENGTH_SHORT
             ).show()
-            return
+            return false
         }
-
-        //start IdlingResource
-        IdlingResourceSingleton.increment()
-        // show progress dialog before fetching the results.
-        showProgressDialog()
         // fetch the country list from the  saved state or network
-        mViewModel.countryDetailsResults.observe(this, mGetCountryDetailsListObserver)
+        // show progress dialog before fetching the results.
+        mViewModel.fetchCountryList(forceLoad).observe(this, mGetCountryDetailsListObserver)
+        return true
     }
-
 
     private fun initializeObserverForFetchingCountryList() {
         // Observe for the changes in the results
@@ -83,7 +85,6 @@ class FirstActivity : BaseActivity() {
             }
             // hide progress dialog
             hideProgressDialog()
-            //end IdlingResource
             IdlingResourceSingleton.decrement()
         }
     }
