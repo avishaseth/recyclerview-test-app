@@ -4,7 +4,7 @@ import java.io.Serializable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class Results : Serializable {
+class Results : T() {
 
     @SerializedName("title")
     @Expose

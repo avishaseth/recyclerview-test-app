@@ -25,7 +25,16 @@ class FirstActivity : BaseActivity() {
         setContentView(R.layout.activity_first, null)
         mViewModel = ViewModelProviders.of(this).get(FirstViewModel::class.java)
         showCountryDetailsListFragment()
+        initializeObserverForFetchingCountryList()
         fetchCountryDetailsList()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        /* We don't want to observe any data change when this fragment is in the
+        current method and will be destroyed */
+        if (mGetCountryDetailsListObserver != null)
+            mViewModel.countryDetailsResults.removeObserver(mGetCountryDetailsListObserver)
     }
 
     private fun initActionBar() {
@@ -42,18 +51,40 @@ class FirstActivity : BaseActivity() {
 
     /* Update title bar with value from API */
     private fun fetchCountryDetailsList() {
-        // fetch the country list from the saved state or network
-        // TODO show progress dialog before fetching the results.
-        mGetCountryDetailsListObserver = Observer<Results> { results ->
-            if (results == null) {
-                // show the message that the request is failure.
-                Toast.makeText(this@FirstActivity, R.string.network_error, Toast.LENGTH_SHORT).show()
-            } else {
-                // Now update the action bar title.
-                updateActionBarTitle(results.title ?: getString(R.string.empty_title))
-            }
+        // check if the network is available
+        if (!isNetworkAvailable()) {
+            Toast.makeText(
+                this@FirstActivity,
+                R.string.internet_not_available_error,
+                Toast.LENGTH_SHORT
+            ).show()
+            return
         }
+
+        // fetch the country list from the  saved state or network
+        // show progress dialog before fetching the results.
+        showProgressDialog()
         mViewModel.countryDetailsResults.observe(this, mGetCountryDetailsListObserver)
     }
 
+
+    private fun initializeObserverForFetchingCountryList() {
+        // Observe for the changes in the results
+        mGetCountryDetailsListObserver = Observer<Results> { results ->
+            if (results.title == null) {
+                // remove the existing title and display no title
+                updateActionBarTitle(null)
+            } else {
+                // show title
+                updateActionBarTitle(results.title)
+            }
+            // hide progress dialog
+            hideProgressDialog()
+        }
+    }
+
+    /* Show progress dialog */
+    public override fun showProgressDialog() {
+        super.showProgressDialog()
+    }
 }

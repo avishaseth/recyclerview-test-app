@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">Test App</string>
+    <string name="activity_country_details_list">AssignmentTestApp</string>
 
     <!--generic strings-->
     <string name="loading">Loading</string>
     <string name="empty_title"></string>
 
-    <string name="network_error">Not able to download the results. Please check your internet connection and try again.</string>
-
+    <string name="no_data">Oops! No data.</string>
+    <string name="network_error_generic">Not able to download the results. Please try again later.</string>
+    <string name="network_error_timeout">Time out. Please try again later.</string>
+    <string name="internet_not_available_error">Please check your internet connection and try again.</string>
 </resources>

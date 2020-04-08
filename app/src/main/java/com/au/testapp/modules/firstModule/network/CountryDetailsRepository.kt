@@ -46,14 +46,26 @@ class CountryDetailsRepository(type: Type, typeAdapter: Any) {
 
             call.enqueue(object : Callback<Results> {
                 override fun onResponse(call: Call<Results>, response: Response<Results>) {
-                    val results = response.body()
-                    if (results != null) {
-                        mMutableResults.value = results
+                    var results = Results()
+                    if (response.body() == null) {
+                        results.rows = null
+                        results.isApiSuccess = false
+                    } else {
+                        results = response.body()!!
+                        results.isApiSuccess = true
                     }
+                    // TODO- We need to map the network/ application specific errors here and in ResponseCode.class.
+                    // Need to do the the handling of the error in ErrorHandler class.
+                    results.resultCode = response.code()
+                    mMutableResults.value = results
                 }
 
                 override fun onFailure(call: Call<Results>, t: Throwable) {
-                    mMutableResults.value = null
+                    var results = Results()
+                    results.rows = null
+                    results.isApiSuccess = false
+                    results.resultCode = ResponseCode.APPLICATION_NETWORK_ERROR_GENERIC
+                    mMutableResults.value = results
                 }
             })
 

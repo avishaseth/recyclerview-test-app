@@ -7,6 +7,9 @@ import com.au.testapp.modules.firstModule.model.Results
 import com.au.testapp.modules.firstModule.network.CountryDetailsRepository
 import com.google.gson.reflect.TypeToken
 
+/**
+ * View Model to access the country detail list from network
+ */
 class FirstViewModel : ViewModel() {
 
     private lateinit var mCountryDetailsListDataSource: CountryDetailsRepository
