@@ -11,7 +11,6 @@ import com.au.testapp.modules.firstModule.databinding.CountryDetailItemViewBindi
 import com.au.testapp.modules.firstModule.model.Row
 import java.util.*
 
-
 /**
  * Adapter class to bind the data to the Recycler view.
  */
@@ -29,8 +28,8 @@ class CountryDetailsListAdapter(private val mCountryDetailsList: ArrayList<Row>)
                 val view = LayoutInflater.from(parent.context).inflate(
                     R.layout.layout_item_empty_view,
                     parent, false
-                );
-                return EmptyViewHolder(view);
+                )
+                return EmptyViewHolder(view)
             }
             else -> {
                 val binding = DataBindingUtil.inflate<LayoutCountryDetailItemBinding>(
@@ -45,7 +44,7 @@ class CountryDetailsListAdapter(private val mCountryDetailsList: ArrayList<Row>)
     override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
         super.onViewDetachedFromWindow(holder)
         if (holder is CountryItemViewHolder) {
-            holder.unbind();
+            holder.unbind()
         }
     }
 
@@ -82,11 +81,10 @@ class CountryDetailsListAdapter(private val mCountryDetailsList: ArrayList<Row>)
     }
 
     internal class EmptyViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
-    }
+        RecyclerView.ViewHolder(itemView)
 
     class CountryItemViewHolder internal constructor(var binding: LayoutCountryDetailItemBinding?) :
-        RecyclerView.ViewHolder(binding!!.getRoot()) {
+        RecyclerView.ViewHolder(binding!!.root) {
 
         internal fun bind(model: CountryDetailItemViewBinding) {
             binding!!.viewmodel = model

@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.au.testapp.BaseActivity
+import com.au.testapp.IdlingResourceSingleton
 import com.au.testapp.R
 import com.au.testapp.modules.firstModule.fragments.CountryDetailListFragment
 import com.au.testapp.modules.firstModule.model.Results
@@ -61,9 +62,11 @@ class FirstActivity : BaseActivity() {
             return
         }
 
-        // fetch the country list from the  saved state or network
+        //start IdlingResource
+        IdlingResourceSingleton.increment()
         // show progress dialog before fetching the results.
         showProgressDialog()
+        // fetch the country list from the  saved state or network
         mViewModel.countryDetailsResults.observe(this, mGetCountryDetailsListObserver)
     }
 
@@ -80,6 +83,8 @@ class FirstActivity : BaseActivity() {
             }
             // hide progress dialog
             hideProgressDialog()
+            //end IdlingResource
+            IdlingResourceSingleton.decrement()
         }
     }
 
