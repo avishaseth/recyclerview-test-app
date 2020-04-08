@@ -68,7 +68,6 @@ class CountryDetailActivity : BaseActivity() {
             return false
         }
         // fetch the country list from the  saved state or network
-        // show progress dialog before fetching the results.
         mViewModel.fetchCountryList(forceLoad).observe(this, mGetCountryDetailsListObserver)
         return true
     }
@@ -85,6 +84,7 @@ class CountryDetailActivity : BaseActivity() {
             }
             // hide progress dialog
             hideProgressDialog()
+            // stop Counting Idling Resource
             IdlingResourceSingleton.decrement()
         }
     }

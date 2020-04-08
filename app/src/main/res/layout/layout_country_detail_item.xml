@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="start|top"
-                    android:text="@{viewmodel.getDescription()}" />
+                    android:text='@{viewmodel.getDescription() ?? @string/no_description}' />
 
                 <ImageView
                     android:id="@+id/thumbnail"
