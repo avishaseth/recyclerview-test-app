@@ -12,6 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 
+/*
+* This is the Base Activity to be extended by all activities.
+* This holds common functions to be used across application.
+ */
 open class BaseActivity : AppCompatActivity() {
 
     companion object {
@@ -105,8 +109,7 @@ open class BaseActivity : AppCompatActivity() {
 
     private fun showFragment(
         fragmentContainerId: Int, fragment: Fragment, fragmentTag: String, addToBackStack: Boolean,
-        withAnimation: Boolean, animEnter: Int, animExit: Int, animPopEnter: Int, animPopExit: Int
-    ) {
+        withAnimation: Boolean, animEnter: Int, animExit: Int, animPopEnter: Int, animPopExit: Int) {
         val previous = supportFragmentManager.findFragmentByTag(fragmentTag)
         var ft = supportFragmentManager.beginTransaction()
 
@@ -135,6 +138,14 @@ open class BaseActivity : AppCompatActivity() {
         mProgressDialog.show()
     }
 
+    /* Hide Progress Dialog */
+    protected fun hideProgressDialog() {
+        if (mProgressDialog.isShowing) {
+            mProgressDialog.hide()
+        }
+    }
+
+    /* Check if network is available */
     fun isNetworkAvailable(): Boolean {
         val service = Context.CONNECTIVITY_SERVICE
         val manager = getSystemService(service) as ConnectivityManager?
@@ -142,10 +153,5 @@ open class BaseActivity : AppCompatActivity() {
         return (network != null)
     }
 
-    /* Hide Progress Dialog */
-    protected fun hideProgressDialog() {
-        if (mProgressDialog.isShowing) {
-            mProgressDialog.hide()
-        }
-    }
+
 }

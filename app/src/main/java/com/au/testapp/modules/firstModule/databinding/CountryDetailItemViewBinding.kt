@@ -22,8 +22,8 @@ class CountryDetailItemViewBinding(row: Row) : BaseObservable() {
     val title: CharSequence?
         get() = mTitle
 
-    val description: CharSequence
-        get() = mDescription ?: "No description available"
+    val description: CharSequence?
+        get() = mDescription
 
     /* load the video thumbnail */
     companion object {

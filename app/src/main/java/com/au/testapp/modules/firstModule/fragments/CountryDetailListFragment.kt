@@ -22,7 +22,7 @@ import com.au.testapp.modules.firstModule.viewmodel.CountryDetailViewModel
 import java.util.*
 
 /**
- * Fragment to detail list of the country
+ * Fragment to show detail list of the country
  */
 class CountryDetailListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
@@ -39,8 +39,7 @@ class CountryDetailListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
     private lateinit var mViewModel: CountryDetailViewModel
     private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
 
-    /*Observers required*/
-    /* This observer is required for the country details list.*/
+    /* This observer is for the country details list result.*/
     private lateinit var mGetCountryDetailsListObserver: Observer<Results>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,11 +48,7 @@ class CountryDetailListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
         mViewModel = ViewModelProviders.of(mActivity).get(CountryDetailViewModel::class.java)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_country_detail_list, container, false)
         initViews(view)
         // set the empty list on the list in the beginning until the data is downloaded.
@@ -65,8 +60,8 @@ class CountryDetailListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // We don't want to observe any data change when this fragment is in the
-        // current method and will be destroyed
+        /* We don't want to observe any data change when this fragment is in the
+         current method and will be destroyed */
         if (mGetCountryDetailsListObserver != null) {
             mViewModel.fetchCountryList(false).removeObserver(mGetCountryDetailsListObserver)
         }
@@ -75,7 +70,7 @@ class CountryDetailListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
     override fun onRefresh() {
         // observe for any update on the server
         // observe the changes on activity too and do appropriate action when results are fetched.
-        // This will return false only when the internet is false
+        // This will return false only when the network state returns false
         var isSuccess = mActivity.fetchCountryDetailsList(true)
         // only if the operation is successful on activity, do the same for the activity
         if (isSuccess)
@@ -101,8 +96,9 @@ class CountryDetailListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
     private fun populateCountryDetailsList() {
         // observe the changes on activity too and do appropriate action when results are fetched.
         var isSuccess = mActivity.fetchCountryDetailsList(false)
-        // only if the operation is successful on activity, do the same for the fragment
+        // only if the operation is successful on activity, do the same for the fragment.
         if (isSuccess) {
+            //start Counting Idling Resource
             IdlingResourceSingleton.increment()
             mActivity.showProgressDialog()
             mViewModel.fetchCountryList(false).observe(this, mGetCountryDetailsListObserver)
@@ -124,12 +120,12 @@ class CountryDetailListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
     }
 
     private fun setDataOnList(results: Results?) {
-        // create a list of items initially the list is empty. if the list is empty the "Empty view is shown on recycler view"
+        // list of items initialised as empty. if the list is empty the "Empty view" is shown on recyclerview
         val itemList = ArrayList<Row>()
         if (results?.rows != null) {
             itemList.addAll(results?.rows!!)
         }
-        // set data on on the list
+        // set data on the list
         var adapter = mRecyclerView.adapter as CountryDetailsListAdapter?
         if (adapter == null) {
             adapter = CountryDetailsListAdapter(itemList)
