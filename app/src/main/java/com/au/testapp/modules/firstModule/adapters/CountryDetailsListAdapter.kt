@@ -23,7 +23,7 @@ class CountryDetailsListAdapter(private val mCountryDetailsList: ArrayList<Row>)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
+        when (viewType) {
             VIEW_TYPE_EMPTY_LIST_PLACEHOLDER -> {
                 val view = LayoutInflater.from(parent.context).inflate(
                     R.layout.layout_item_empty_view,

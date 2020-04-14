@@ -38,4 +38,8 @@
         <item name="android:textSize">@dimen/text_medium_x</item>
     </style>
 
+    <style name="SecondaryTextLarge" parent="SecondaryText">
+        <item name="android:textSize">@dimen/text_large_xxx</item>
+    </style>
+
 </resources>

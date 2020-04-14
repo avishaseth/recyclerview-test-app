@@ -5,11 +5,10 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_error"
-        style="@style/SecondaryTextSmall"
+        style="@style/SecondaryTextLarge"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:padding="@dimen/size_30"
-        android:text="@string/no_data"
-        android:textSize="@dimen/text_large_xxx" />
+        android:text="@string/no_data" />
 </LinearLayout>
