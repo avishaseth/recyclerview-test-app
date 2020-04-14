@@ -34,7 +34,7 @@ class CountryDetailsRepository(type: Type, typeAdapter: Any) {
             .addConverterFactory(createGSONConverter(type, typeAdapter))
             .build()
 
-        this.mApi = mRetrofitInstance.create(CountryDetailsService::class.java!!)
+        this.mApi = mRetrofitInstance.create(CountryDetailsService::class.java)
         mMutableResults = MutableLiveData()
     }
 

@@ -1,13 +1,14 @@
 package com.au.testapp
 
-import android.app.ProgressDialog
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -23,15 +24,14 @@ open class BaseActivity : AppCompatActivity() {
         var INVALID_TITLE = -1
     }
 
-    private lateinit var mProgressDialog: ProgressDialog
+    private lateinit var mProgressBarLayout: RelativeLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        mProgressBarLayout = findViewById(R.id.loading)
         setSupportActionBar(toolbar)
-        // initialize progress dialog for network operation
-        initializeProgressDialog()
     }
 
     override fun onBackPressed() {
@@ -57,7 +57,7 @@ open class BaseActivity : AppCompatActivity() {
     protected fun initActionBar(titleResId: Int, homeIcon: Int, displayHomeIcon: Boolean) {
         val actionBar = supportActionBar
         if (actionBar != null) {
-            val bgDrawable = resources.getDrawable(R.drawable.actionbar_background)
+            val bgDrawable = resources.getDrawable(R.drawable.actionbar_background, this.theme)
             actionBar.setBackgroundDrawable(bgDrawable)
             if (titleResId == INVALID_TITLE) {
                 actionBar.setTitle(R.string.empty_title)
@@ -124,32 +124,27 @@ open class BaseActivity : AppCompatActivity() {
         ft.commit()
     }
 
-    private fun initializeProgressDialog() {
-        mProgressDialog = ProgressDialog(this)
-        mProgressDialog!!.setMessage(getString(R.string.loading))
-        mProgressDialog!!.isIndeterminate = true
-        mProgressDialog!!.setCancelable(false)
-    }
-
     /* Show Progress Dialog */
     protected open fun showProgressDialog() {
-        mProgressDialog.show()
+        mProgressBarLayout.visibility = View.VISIBLE
     }
 
     /* Hide Progress Dialog */
     protected fun hideProgressDialog() {
-        if (mProgressDialog.isShowing) {
-            mProgressDialog.hide()
-        }
+        mProgressBarLayout.visibility = View.GONE
     }
 
     /* Check if network is available */
     fun isNetworkAvailable(): Boolean {
         val service = Context.CONNECTIVITY_SERVICE
         val manager = getSystemService(service) as ConnectivityManager?
-        val network = manager?.activeNetworkInfo
-        return (network != null)
+        val actNw = manager?.getNetworkCapabilities(manager.activeNetwork) ?: return false
+
+        return when {
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            else -> false
+        }
     }
-
-
 }

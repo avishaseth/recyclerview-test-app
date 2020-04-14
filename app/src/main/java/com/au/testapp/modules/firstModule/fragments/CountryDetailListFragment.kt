@@ -51,8 +51,6 @@ class CountryDetailListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_country_detail_list, container, false)
         initViews(view)
-        // set the empty list on the list in the beginning until the data is downloaded.
-        setDataOnList(null)
         initializeObserverForFetchingCountryList();
         populateCountryDetailsList()
         return view
@@ -62,9 +60,8 @@ class CountryDetailListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
         super.onDestroyView()
         /* We don't want to observe any data change when this fragment is in the
          current method and will be destroyed */
-        if (mGetCountryDetailsListObserver != null) {
-            mViewModel.fetchCountryList(false).removeObserver(mGetCountryDetailsListObserver)
-        }
+        mViewModel.fetchCountryList(false).removeObserver(mGetCountryDetailsListObserver)
+
     }
 
     override fun onRefresh() {
@@ -96,12 +93,15 @@ class CountryDetailListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
     private fun populateCountryDetailsList() {
         // observe the changes on activity too and do appropriate action when results are fetched.
         var isSuccess = mActivity.fetchCountryDetailsList(false)
+        //start Counting Idling Resource
+        IdlingResourceSingleton.increment()
+        mActivity.showProgressDialog()
         // only if the operation is successful on activity, do the same for the fragment.
         if (isSuccess) {
-            //start Counting Idling Resource
-            IdlingResourceSingleton.increment()
-            mActivity.showProgressDialog()
             mViewModel.fetchCountryList(false).observe(this, mGetCountryDetailsListObserver)
+        } else {
+            // set the empty list on the list in the beginning until the data is downloaded.
+            setDataOnList(null)
         }
     }
 
@@ -116,6 +116,7 @@ class CountryDetailListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
             }
             setDataOnList(results)
             mSwipeRefreshLayout.isRefreshing = false
+
         }
     }
 
@@ -123,7 +124,7 @@ class CountryDetailListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
         // list of items initialised as empty. if the list is empty the "Empty view" is shown on recyclerview
         val itemList = ArrayList<Row>()
         if (results?.rows != null) {
-            itemList.addAll(results?.rows!!)
+            itemList.addAll(results.rows!!)
         }
         // set data on the list
         var adapter = mRecyclerView.adapter as CountryDetailsListAdapter?

@@ -34,9 +34,8 @@ class CountryDetailActivity : BaseActivity() {
         super.onDestroy()
         /* We don't want to observe any data change when this fragment is in the
         current method and will be destroyed */
-        if (mGetCountryDetailsListObserver != null) {
-            mViewModel.fetchCountryList(false).removeObserver(mGetCountryDetailsListObserver)
-        }
+        mViewModel.fetchCountryList(false).removeObserver(mGetCountryDetailsListObserver)
+
     }
 
     private fun initActionBar() {
@@ -84,8 +83,8 @@ class CountryDetailActivity : BaseActivity() {
             }
             // hide progress dialog
             hideProgressDialog()
-            // stop Counting Idling Resource
-            IdlingResourceSingleton.decrement()
+           // stop Counting Idling Resource
+           IdlingResourceSingleton.decrement()
         }
     }
 
