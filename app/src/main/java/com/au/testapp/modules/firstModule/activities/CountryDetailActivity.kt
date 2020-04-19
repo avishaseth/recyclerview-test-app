@@ -10,6 +10,7 @@ import com.au.testapp.R
 import com.au.testapp.modules.firstModule.fragments.CountryDetailListFragment
 import com.au.testapp.modules.firstModule.model.Results
 import com.au.testapp.modules.firstModule.viewmodel.CountryDetailViewModel
+import org.jetbrains.annotations.TestOnly
 
 /**
  * Activity class to show country details list
@@ -56,21 +57,6 @@ class CountryDetailActivity : BaseActivity() {
         )
     }
 
-    fun fetchCountryDetailsList(forceLoad: Boolean): Boolean {
-        // check if the network is available
-        if (!isNetworkAvailable()) {
-            Toast.makeText(
-                this@CountryDetailActivity,
-                R.string.internet_not_available_error,
-                Toast.LENGTH_SHORT
-            ).show()
-            return false
-        }
-        // fetch the country list from the  saved state or network
-        mViewModel.fetchCountryList(forceLoad).observe(this, mGetCountryDetailsListObserver)
-        return true
-    }
-
     private fun initializeObserverForFetchingCountryList() {
         // Observe for the changes in the results
         mGetCountryDetailsListObserver = Observer<Results> { results ->
@@ -83,13 +69,37 @@ class CountryDetailActivity : BaseActivity() {
             }
             // hide progress dialog
             hideProgressDialog()
-           // stop Counting Idling Resource
-           IdlingResourceSingleton.decrement()
+            // stop Counting Idling Resource
+            IdlingResourceSingleton.decrement()
         }
+    }
+
+    fun fetchCountryDetailsList(forceLoad: Boolean): Boolean {
+        // check if the network is available
+        if (!this.isNetworkAvailable()) {
+            showToast(R.string.internet_not_available_error)
+            return false
+        }
+        // fetch the country list from the  saved state or network
+        mViewModel.fetchCountryList(forceLoad).observe(this, mGetCountryDetailsListObserver)
+        return true
+    }
+
+    fun showToast(resourceStringId:Int){
+        Toast.makeText(
+            this@CountryDetailActivity,
+            resourceStringId,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     /* Show progress dialog */
     public override fun showProgressDialog() {
         super.showProgressDialog()
+    }
+
+    @TestOnly
+    fun setTestViewModel(mockedViewModel: CountryDetailViewModel) {
+        mViewModel = mockedViewModel
     }
 }
