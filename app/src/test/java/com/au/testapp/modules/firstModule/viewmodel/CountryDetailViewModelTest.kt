@@ -17,7 +17,7 @@ class CountryDetailViewModelTest {
     var rule: TestRule = InstantTaskExecutorRule()
 
     @MockK
-    private lateinit var fetchCountryResult:MutableLiveData<Results>
+    private lateinit var fetchCountryResult: MutableLiveData<Results>
     private val vmSpy = spyk<CountryDetailViewModel>(recordPrivateCalls = true)
     private var reflection: Field = CountryDetailViewModel::class.java.getDeclaredField("mResults")
 
@@ -25,7 +25,7 @@ class CountryDetailViewModelTest {
     fun setUp() {
         MockKAnnotations.init(this, relaxUnitFun = true)
         every { vmSpy["loadResults"]() } returns fetchCountryResult
-        reflection.isAccessible=true
+        reflection.isAccessible = true
     }
 
     /**
@@ -38,7 +38,7 @@ class CountryDetailViewModelTest {
     @Test
     fun fetchCountryList_forceLoadTrue_shouldCallLoadResults() {
         vmSpy.fetchCountryList(true)
-        verify {vmSpy["loadResults"]() }
+        verify { vmSpy["loadResults"]() }
     }
 
     /**
@@ -49,11 +49,11 @@ class CountryDetailViewModelTest {
      * forceLoad = false, mResults is not null, mResult.value is null
      */
     @Test
-    fun fetchCountryList_mResultValueNull_shouldCallLoadResults(){
+    fun fetchCountryList_mResultValueNull_shouldCallLoadResults() {
         every { fetchCountryResult.value } returns null
-        reflection.set(vmSpy,fetchCountryResult)
+        reflection.set(vmSpy, fetchCountryResult)
         vmSpy.fetchCountryList(false)
-        verify {vmSpy["loadResults"]() }
+        verify { vmSpy["loadResults"]() }
     }
 
     /**
@@ -64,9 +64,9 @@ class CountryDetailViewModelTest {
      * forceLoad = false and mResults is null
      */
     @Test
-    fun fetchCountryList_mResultNull_shouldCallLoadResults(){
+    fun fetchCountryList_mResultNull_shouldCallLoadResults() {
         vmSpy.fetchCountryList(false)
-        verify {vmSpy["loadResults"]() }
+        verify { vmSpy["loadResults"]() }
     }
 
     /**
@@ -77,10 +77,10 @@ class CountryDetailViewModelTest {
      * forceLoad = false and mResult is not null
      */
     @Test
-    fun fetchCountryList_forceLoadFalse_shouldNeverCallLoadResults(){
-        reflection.set(vmSpy,fetchCountryResult)
+    fun fetchCountryList_forceLoadFalse_shouldNeverCallLoadResults() {
+        reflection.set(vmSpy, fetchCountryResult)
         every { fetchCountryResult.value } returns mockkClass(Results::class)
         vmSpy.fetchCountryList(false)
-        verify(exactly = 0) {vmSpy["loadResults"]() }
+        verify(exactly = 0) { vmSpy["loadResults"]() }
     }
 }
